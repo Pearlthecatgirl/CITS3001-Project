@@ -1,10 +1,31 @@
 #!/usr/bin/python3
+
+def dijkstra(adjlist, src, count):
+    import heapq as qq
+    Infinity=None
+    dist, prev=[Infinity for _ in range(count)], [None for _ in range(count)]
+
+    q=[]
+    qpush=lambda x:qq.heappush(q, x)
+    qpop=lambda:qq.heappop(q)
+
+    qpush((None, src, 0))
+    while (len(q)>0):
+        s, d, w=qpop()
+        if dist[d] is not Infinity: continue #visited before
+        dist[d]=w
+        prev[d]=s
+        for v, wf, wm, wp in adjlist[d]:
+            wtotal=wf+wm+wp
+            if dist[v] is not Infinity: continue
+            qpush((d, v, wtotal+w))
+    return dist, prev
+
 def bellmanford(edgelist, src, count, weight_key=lambda w, visited=False:w[1]+w[2]if visited and w[0]<0 else sum(w)):
     Infinity=None
     dist, prev=[Infinity for _ in range(count)], [None for _ in range(count)]
     # if nth edge is visited, do not give the bribe.
     visited=[False for _ in edgelist] 
-
     dist[src]=0
 
     # O((count-1)*|E|)=O((|V|-|suspects|)*|E|)=O(VE)
@@ -29,9 +50,9 @@ def parse_adjlist():
     count=clues+suspects #Count for how many vertecies total
     cluesGraph=[]
     for i in range(clues): 
-        # Get the number of total counts
-        line=list(map(int, input().split()))[1:]
+        # Get the number of total counts line=list(map(int, input().split()))[1:]
         cluesGraph.append([[line[4*j], line[4*j+1], line[4*j+2], line[4*j+3]] for j in range(0, (len(line))//4)])
+
     # treat suspects as a vertex with no outgoing, aka sink node type.
     for _ in range(suspects):cluesGraph.append([])
     return (cluesGraph, freeclue, clues, suspects)
@@ -49,7 +70,7 @@ def parse_edgelist():
             cluesConnectionsList.append((i, line[j], (line[j+1], line[j+2], line[j+3])))
     return (cluesConnectionsList, freeclue, clues, suspects)
 
-# Add implementation here
+
 def mysort(array, key):
     return sorted(array, key=key)
 
@@ -58,9 +79,19 @@ def output(distances, clues, suspects):
     order=[i for i in range(suspects)]
     return mysort(order, key=total_effort)
 
-tup=parse_edgelist()
-order=bellmanford(tup[0], tup[1], tup[2]+tup[3])
-opt=output(order[0], tup[2], tup[3])
-s=""
-for i in opt: s+=str(i)+' '
-print(s)
+def accepted_answer():
+    tup=parse_edgelist()
+    order=bellmanford(tup[0], tup[1], tup[2]+tup[3])
+    print(order)
+    opt=output(order[0], tup[2], tup[3])
+    s=""
+    for i in opt: s+=str(i)+' '
+    print(s)
+
+def wrong_answer():
+    tup=parse_adjlist()
+    order=dijkstra(tup[0], tup[1], tup[2]+tup[3])
+    opt=output(order[0], tup[2], tup[3])
+    print(opt)
+
+accepted()
