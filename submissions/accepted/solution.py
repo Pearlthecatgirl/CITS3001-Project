@@ -61,4 +61,5 @@ def output(distances, clues, suspects):
 
 tup=parse_edgelist()
 order=bellmanford(tup[0], tup[1], tup[2]+tup[3])
-print(output(order[0], tup[2], tup[3]))
+opt=output(order[0], tup[2], tup[3])
+for i in opt: print(i, end=" ")
