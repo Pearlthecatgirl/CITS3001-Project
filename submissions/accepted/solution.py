@@ -18,7 +18,7 @@ def bellmanford(edgelist, src, count, weight_key=lambda w, visited=False:w[1]+w[
                 # relaxation by checking if currently disconnected, or the src+w(src,dest)<w(dest)
                 # visited[n] is checked to see if bribe applies
                 if dist[d]==Infinity or dist[s]+weight_key(w, visited=visited[n])<dist[d]:
-                    dist[d]=dist[s]+weight_key(w, visited=visited[n])
+                    dist[d]=dist[s]+weight_key(w, visited=visited[n]) #weight_key ->O(1)
                     prev[d]=s
                     visited[n]=True # this connection has been made, no more bribes are given
     return (dist, prev)
@@ -50,9 +50,15 @@ def parse_edgelist():
             cluesConnectionsList.append((i, line[j], (line[j+1], line[j+2], line[j+3])))
     return (cluesConnectionsList, freeclue, clues, suspects)
 
+# Add implementation here
+def mysort(array, key):
+    return sorted(array, key=key)
+
 def output(distances, clues, suspects):
-    ...
+    total_effort=lambda s:distances[clues+s] #O(1)
+    order=[i for i in range(suspects)]
+    return mysort(order, key=total_effort)
 
 tup=parse_edgelist()
 order=bellmanford(tup[0], tup[1], tup[2]+tup[3])
-print(order)
+print(output(order[0], tup[2], tup[3]))
