@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 def bellmanford(edgelist, src, count, weight_key=lambda w, visited=False:w[1]+w[2]if visited and w[0]<0 else sum(w)):
     Infinity=None
     dist, prev=[Infinity for _ in range(count)], [None for _ in range(count)]
@@ -62,4 +61,6 @@ def output(distances, clues, suspects):
 tup=parse_edgelist()
 order=bellmanford(tup[0], tup[1], tup[2]+tup[3])
 opt=output(order[0], tup[2], tup[3])
-for i in opt: print(i, end=" ")
+s=""
+for i in opt: s+=str(i)+' '
+print(s)
