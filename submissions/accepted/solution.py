@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
+maxpossible=float("inf")
+
 def dijkstra(adjlist, src, count):
     import heapq as qq
-    Infinity=None
+    Infinity=maxpossible
     dist, prev=[Infinity for _ in range(count)], [None for _ in range(count)]
 
     q=[]
@@ -21,8 +23,17 @@ def dijkstra(adjlist, src, count):
             qpush((d, v, wtotal+w))
     return dist, prev
 
+def permutation(edgelist, src, count, weight_key=lambda w, visited=False:w[1]+w[2]if visited and w[0]<0 else sum(w)):
+    paths=[]
+    nextnode=0
+    while True:
+        current_paths=[]
+        nextnode+=1
+        for i in range(len(edgelist)):
+            if edgelist[i][0]
+
 def bellmanford(edgelist, src, count, weight_key=lambda w, visited=False:w[1]+w[2]if visited and w[0]<0 else sum(w)):
-    Infinity=None
+    Infinity=maxpossible
     dist, prev=[Infinity for _ in range(count)], [None for _ in range(count)]
     # if nth edge is visited, do not give the bribe.
     visited=[False for _ in edgelist] 
@@ -50,6 +61,7 @@ def parse_adjlist():
     count=clues+suspects #Count for how many vertecies total
     cluesGraph=[]
     for i in range(clues): 
+        line=list(map(int, input().split()))
         # Get the number of total counts line=list(map(int, input().split()))[1:]
         cluesGraph.append([[line[4*j], line[4*j+1], line[4*j+2], line[4*j+3]] for j in range(0, (len(line))//4)])
 
@@ -70,6 +82,17 @@ def parse_edgelist():
             cluesConnectionsList.append((i, line[j], (line[j+1], line[j+2], line[j+3])))
     return (cluesConnectionsList, freeclue, clues, suspects)
 
+def parse_edgelist_slow():
+    clues, suspects, freeclue=input().split()
+    clues, suspects, freeclue=int(clues), int(suspects), int(freeclue)
+    count=clues+suspects #Count for how many vertecies total
+    cluesConnectionsList=[]
+    for i in range(clues):  #(O(|E|), touches each edge once
+        # Get the number of total counts
+        line=list(map(int, input().split()))[1:]
+        for j in range(0, len(line), 4):
+            cluesConnectionsList.append((i, line[j], (line[j+1], line[j+2], line[j+3])))
+    return (cluesConnectionsList, freeclue, clues, suspects)
 
 def mysort(array, key):
     return sorted(array, key=key)
@@ -82,7 +105,6 @@ def output(distances, clues, suspects):
 def accepted_answer():
     tup=parse_edgelist()
     order=bellmanford(tup[0], tup[1], tup[2]+tup[3])
-    print(order)
     opt=output(order[0], tup[2], tup[3])
     s=""
     for i in opt: s+=str(i)+' '
@@ -92,6 +114,13 @@ def wrong_answer():
     tup=parse_adjlist()
     order=dijkstra(tup[0], tup[1], tup[2]+tup[3])
     opt=output(order[0], tup[2], tup[3])
-    print(opt)
+    s=""
+    for i in opt: s+=str(i)+' '
+    print(s)
 
-accepted()
+def timeout_answer():
+    tup=parse_edgelist()
+    order=permutation(tup[0], tup[1], tup[2]+tup[3])
+    ...
+
+wrong_answer()
