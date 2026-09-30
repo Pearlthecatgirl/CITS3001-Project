@@ -47,7 +47,6 @@ def permutation(edgelist, src, clues, sus):
     for i in paths:
         if i[-1][1]>=clues: 
             p2.append(i) #remove all crossroad paths, aka paths that dont fully reach the end
-    #print(p2[-1][1:])
     
     suscount=[Infinity for _ in range(sus)]
     for p in p2:
