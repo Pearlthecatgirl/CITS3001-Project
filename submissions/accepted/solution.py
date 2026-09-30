@@ -23,24 +23,6 @@ def dijkstra(adjlist, src, count):
             qpush((d, v, wtotal+w))
     return dist, prev
 
-#def permutation(edgelist, src, count, weight_key=lambda w, visited=False:w[1]+w[2]if visited and w[0]<0 else sum(w)):
-#    from collections import deque
-#    paths=[]
-#    nextnode=deque()
-#    nextnode.append(src)
-#    while True:
-#        current_paths=[]
-#        if len(nextnode)==0: break
-#        current_paths.append(nextnode.popleft())
-#        crossroads=-1 #the last path index before all edges
-#        for i in range(len(edgelist)):
-#            # check if the edges have outgoing from the next node
-#            if edgelist[i][0]==nextnode:
-#                if len(curren_paths[crossroads])<count-1:
-#                    current_paths.append(current_paths[crossroads].copy()+[edgelist[i]])
-#                    nextnode.append(edgelist[i][1])
-#        paths+=current_paths
-
 def permutation(edgelist, src, clues, sus):
     weight_function=lambda w, visited=False:w[1]+w[2]if visited and w[0]<0 else sum(w)
     Infinity=maxpossible
@@ -161,6 +143,5 @@ def timeout_answer():
     s=""
     for i in opt: s+=str(i)+' '
     print(s)
-    ...
 
-timeout_answer()
+accepted_answer()
