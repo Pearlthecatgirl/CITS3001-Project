@@ -42,6 +42,8 @@ def dijkstra(adjlist, src, count):
 #        paths+=current_paths
 
 def permutation(edgelist, src, clues, sus):
+    weight_function=lambda w, visited=False:w[1]+w[2]if visited and w[0]<0 else sum(w)
+    Infinity=maxpossible
     count=clues+sus
     from collections import deque
     paths = []
@@ -63,6 +65,20 @@ def permutation(edgelist, src, clues, sus):
     for i in paths:
         if i[-1][1]>=clues: 
             p2.append(i) #remove all crossroad paths, aka paths that dont fully reach the end
+    #print(p2[-1][1:])
+    
+    suscount=[Infinity for _ in range(sus)]
+    for p in p2:
+        visited=[False for _ in edgelist]
+        w=0
+        for node in p[1:]:
+            n=edgelist.index(node)
+            w+=weight_function(node[-1], visited[n])
+            visited[n]=False
+        if w<suscount[p[-1][1]-clues]:
+            suscount[p[-1][1]-clues]=w
+    #print(suscount)
+    return suscount
 
 def bellmanford(edgelist, src, count, weight_key=lambda w, visited=False:w[1]+w[2]if visited and w[0]<0 else sum(w)):
     Infinity=maxpossible
@@ -141,6 +157,10 @@ def wrong_answer():
 def timeout_answer():
     tup=parse_edgelist()
     order=permutation(tup[0], tup[1], tup[2], tup[3])
+    opt=output([[] for _ in range(tup[2])]+order, tup[2], tup[3])
+    s=""
+    for i in opt: s+=str(i)+' '
+    print(s)
     ...
 
 timeout_answer()
