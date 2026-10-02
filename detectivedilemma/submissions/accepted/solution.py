@@ -39,17 +39,17 @@ def permutation(edgelist, src, clues, sus):
         for edge in edgelist:
             if edge[0] == node:
                 new_path = path + [edge]
-                if len(new_path)<=count:
-                    paths.append(new_path)
-                    nextnode.append((new_path, edge[1]))
-    
-    p2=[]
-    for i in paths:
-        if i[-1][1]>=clues: 
-            p2.append(i) #remove all crossroad paths, aka paths that dont fully reach the end
+                #if len(new_path)<=count:
+                paths.append(new_path)
+                nextnode.append((new_path, edge[1]))
+    #p2=[]
+    #for i in paths:
+    #    if i[-1][1]>=clues: 
+    #        p2.append(i) #remove all crossroad paths, aka paths that dont fully reach the end
     #print(p2[-1][1:])
     #print(len(paths))
     #print(len(p2))
+    p2=paths
     
     suscount=[Infinity for _ in range(sus)]
     for p in p2:
@@ -64,7 +64,8 @@ def permutation(edgelist, src, clues, sus):
     #print(suscount)
     return suscount
 
-def bellmanford(edgelist, src, count, weight_key=lambda w, visited=False:w[1]+w[2]if visited and w[0]<0 else sum(w)):
+def bellmanford(edgelist, src, count):
+    weight_key=lambda w, visited=False:w[1]+w[2]if visited and w[0]<0 else sum(w)
     Infinity=maxpossible
     dist, prev=[Infinity for _ in range(count)], [None for _ in range(count)]
     # if nth edge is visited, do not give the bribe.
@@ -72,7 +73,7 @@ def bellmanford(edgelist, src, count, weight_key=lambda w, visited=False:w[1]+w[
     dist[src]=0
 
     # O((count-1)*|E|)=O((|V|-|suspects|)*|E|)=O(VE)
-    for _ in range(count-1): #count-1 relaxations
+    for _ in range((count-1)*2): #count-1 relaxations
         # check every connection!
         for n in range(len(edgelist)): # at worst case, every edge is connected, so touch every edge
             s, d, w=edgelist[n]
