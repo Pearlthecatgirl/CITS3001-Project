@@ -1,0 +1,51 @@
+# Detective Dilemma Problem
+
+## Overview: 
+
+The problem is about a very lazy detective who wants to spend as little resources as possible in solving cases. You are this detective, and you are given a _conspiracy board_ which contains the clues and suspects, as well as the costs (physical, financial, mental) to make connections between the clues/suspects. The conspiracy board should allude to the fact that this problem is a graph problem, and the "spending as little resources as possible" should tell the competitors that this is a shortest-path algorithm. Given these facts, it is easy to assume the algorithm is simply Dijkstra's single-source-shortest-path algorithm, however, there is also a twist in the story which renders Dijkstra's algorithm as wrong. The problem describes how some clues will net the detective a bribe - a negative financial burden. This may not effect the overall cost - the sum of financial,physical and mental cost, but if the negative financial burden is great enough, then the detective may be motivated to take a certain path above others. This means that certain edges between clues/suspects may be negative. The description also describes how the bribe is only given once, and that this is not a way to gain infinite money. This line confirms that there are guarenteed to be no negative loops, which would fail the Bellman/Ford's algorithm, which is the alternative to Dijsktra's algorithm which takes into account negative edge weights. 
+
+## Interpreting the input:
+The input is gives the detective the number of clues, suspects, and the clue which you should start the investigation (the source node for shortest-path calculations). Then, the number of clues are given as an outgoing adjacency list. The suspects are not given as nodes, due to the fact that suspects cannot lead to other clues/suspects (due to the detective's lazy nature), however, since all the names are simply numbers, it suffices to only give the number of total suspects. 
+
+## Bellman/Ford Algorithm vs Dijkstra's Algorithm
+Dijkstra's algorithm relies on the assumption of a greedy local optimal choice, but due to the possibility of negative edge weights, local choices may not be optimal, and you must look into the future to determine if a local choice is optimal. Bellman/Ford algorithm does not rely on an assumption of local optimal choice, instead checking every single node by relying on another assumption: the maximum length of the shortest path must be fixed (normally this is V-1 edges, but this is slightly different for this problem). 
+
+## Adapting Bellman/Ford's algorithm for this problem
+Psuedo-code for regular Bellman Ford's algorithm is given below.
+
+
+```
+    Bellman_Ford: (list_of_edges, start, number_of_vertices) -> (minimum_lengths, predecessors):
+        l: list_of_vertices
+        d: list_of_distances
+        p: list_of_predecessors
+    
+        d[index_of_source_node] = 0 # The source node is always 0.
+    
+        for relaxation_round in |V|-1:
+    	for edge in list_of_edges:
+    
+    	    # only add to graph if the source of this connection is already in our growing tree traveral
+    	    if distance from source to edge.source == Infinity:
+    		continue to next edge
+    	    else:
+    		if distance from source to edge.dest == Infinity:
+    		or
+    		# Replace with shorter length after a new shortest path is found
+    		if distance from source to edge.source + edge.distance < distance from source to edge.dest:
+    		    distance from source to edge.dest = distance from source to edge.source + edge.distance
+        return (d, p)
+```
+
+To modify Bellman/Ford's Algorithm to suit our needs: we know in the worst case scenario, each node can loop in on itself, causing the shortest path to be (|V|-1)*(2) long, so we must modify the number of relaxation rounds by simply multiplying it by 2. Regular Bellman-Ford Algorithm also takes only a single static weight, but since bribes are only counted once, this must be reflected upon with a weight function to give the true edge weight. It is not possible to modify Dijkstra's algorithm with negative edge weights, since weights are only considered locally. Any future considerations to weight is not made by Dijkstra's algorithm at all, so it cannot work. 
+
+## Complexity analysis
+There now exist ~2*V rounds of relaxation, for each relaxation each edge within the edgelist is considered. Therefore the big O complexity is as given:
+
+O(2*V*E)=O(VE)
+
+However, it is notable that given a highly densely populated graph, O(E)~O(V^2), hence the time complexity may reach O(V^3)
+
+The only objects used by this algorithm is:
+list of distances, list of predecessors, list of visited nodes. Each list is always |V| long. So the complexity is:
+O(3|V|)=O(|V|)
