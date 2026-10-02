@@ -58,7 +58,7 @@ def permutation(edgelist, src, clues, sus):
         for node in p[1:]:
             n=edgelist.index(node)
             w+=weight_function(node[-1], visited[n])
-            visited[n]=False
+            visited[n]=True
         if w<suscount[p[-1][1]-clues]:
             suscount[p[-1][1]-clues]=w
     #print(suscount)
