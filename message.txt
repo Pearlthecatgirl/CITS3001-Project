@@ -1,0 +1,24 @@
+Marking Criterion:
+
+    Problem Quality (40%):
+    Algorithm and description (15%): Well chosen algorithm, and creative description that does not make the intended solution obvious. Clear sample data, that helps the reader understand the challenge.
+    Solutions (10%): A set of intended solutions, and a variety of non-accepting attempts, written in clearly commented python, demonstrating excellent coding practice.
+    Test data (10%): Well designed test data that clearly differentiates intended and non-accepting solutions. Cover edge cases, as well as randomised test data at the inpout limits.
+     Meta data (5%): Problemstools format applied concistenly, with problem.yaml specifying time and memory limits.
+
+
+    Solution Description (30%):
+    Overview (10%): Summary of the problem, relating to explicit algorithms or techniques covered in the lectures. Explain the key insights required to solve the problem.
+    Solution (10%): Pseudocode of algorithm and description of data structures used to solved the porblem. Make the solution clear and easy to follow. Highlight when alternative approaches will not work.
+    Complexity analysis (10%): Derive the time and space complexity of the given solution. This should roughly agree with the the test data 
+
+
+    Attempts at peers problems (20%): 
+    For each of your group members you should produce an attempted solution, and feedback.
+    Attempted solutions (10%): Aim to spend at most one hour on each problem, and provide the code of your attempt. 
+    Feedback (10%): For each group member provide a paragraph giving constructive feedback on their problem. What you liked, and what you had trouble understanding.
+
+
+    Teamwork Score (10%): 
+    Contest Quality (5%): A well designed contest without repetition and spectrum of easy ( less than 10 minutes to solve) to chalenging (45-60 minutes to solve).
+    Team Dynamics (5%): Everyone worked well together, the problems were provided with sufficient time, and the feedback was thoughtful and professional.
